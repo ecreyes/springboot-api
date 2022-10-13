@@ -37,6 +37,9 @@ public class Client {
     @Email
     private String email;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;
@@ -80,6 +83,14 @@ public class Client {
 
     public Date getCreateAt() {
         return createAt;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }

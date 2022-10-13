@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ecreyes.springbootbackendapi.model.Client;
 import com.ecreyes.springbootbackendapi.service.IClientService;
@@ -84,6 +86,17 @@ public class ClientController {
         Boolean result = this.clientService.delete(id);
         Map<String, Object> response = new HashMap<>();
         response.put("data", result);
+        return new ResponseEntity<Map<String, Object>>(response,
+                result ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/clients/avatar")
+    public ResponseEntity<Map<String, Object>> upload(@RequestParam("file") MultipartFile file,
+            @RequestParam("id") Long id) {
+        Boolean result = this.clientService.uploadFile(file, id);
+        Client client = this.clientService.findById(id);
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", result ? client : null);
         return new ResponseEntity<Map<String, Object>>(response,
                 result ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
